@@ -7,6 +7,7 @@ class ImageController < ApplicationController
       file.write decoded_file
       file.close
       @image = Image.new
+      debugger
       @image.photo =  File.new(file.open)
       if @image.save
         render :json => {:image_id => @image.id, :message => "Successfully uploaded the picture."}
@@ -22,7 +23,8 @@ class ImageController < ApplicationController
 
   def return_image
     @image = Image.find(params[:image_id])
-    send_data @image.photo, :type => 'image/jpg',:disposition => 'inline'
+    send_data Paperclip.io_adapters.for(@image.photo).read, :type => @image.photo.content_type,:disposition => 'inline'
+
   end
 
 end
