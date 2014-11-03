@@ -7,7 +7,6 @@ class ImageController < ApplicationController
       file.write decoded_file
       file.close
       @image = Image.new
-      debugger
       @image.photo =  File.new(file.open)
       if @image.save
         render :json => {:image_id => @image.id, :message => "Successfully uploaded the picture."}
